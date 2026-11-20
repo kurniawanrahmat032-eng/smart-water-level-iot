@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <!-- Lebar mengikuti layar, zoom dikunci -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Smart Water Level Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+
+    <style>
+        html, body {
+            touch-action: manipulation; /* cegah double-tap zoom */
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, #004b7a 0%, #001f3f 40%, #050b14 75%, #000000 100%);
+            overflow: hidden;
+        }
+
+        .title-link {
+            text-decoration: none;
+            display: block;
+            width: 100%;
+        }
+
+        .title-container {
+            position: relative;
+            padding: 20px 5vw;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Black Ops One', cursive, sans-serif;
+            /* Otomatis mengecil/membesar mengikuti lebar layar */
+            font-size: clamp(1.6rem, 7.5vw, 3.2rem);
+            line-height: 1.2;
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: 2px;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+            text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.9),
+                         0px 0px 20px rgba(0, 180, 216, 0.8),
+                         0px 0px 40px rgba(0, 119, 182, 0.6);
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .subtitle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: Arial, sans-serif;
+            font-size: clamp(0.65rem, 2.8vw, 0.9rem);
+            font-weight: bold;
+            color: #48cae4;
+            letter-spacing: 3px;
+            margin-top: 14px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0px 0px 10px rgba(72, 202, 228, 0.7);
+            transition: color 0.3s ease;
+        }
+
+        .subtitle-logo {
+            width: 60px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .title-link:hover h1 {
+            transform: scale(1.04);
+            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.9),
+                         0px 0px 30px rgba(72, 202, 228, 1),
+                         0px 0px 60px rgba(0, 119, 182, 0.9);
+        }
+
+        .title-link:hover .subtitle {
+            color: #90e0ef;
+            text-shadow: 0px 0px 15px rgba(144, 224, 239, 1);
+        }
+
+        .title-link:active h1 {
+            transform: scale(0.98);
+        }
+
+        /* --- FLOATING CONTACT BUTTON --- */
+        .floating-contact {
+            position: fixed;
+            bottom: 18px;
+            left: 18px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .contact-trigger {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #000000;
+            border: 1.5px solid rgba(72, 202, 228, 0.6);
+            padding: 0px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 0 12px rgba(72, 202, 228, 0.4);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .contact-trigger:hover {
+            transform: scale(1.08);
+            border-color: #90e0ef;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.9), 0 0 18px rgba(72, 202, 228, 0.8);
+        }
+
+        .contact-trigger img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .contact-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.25s ease;
+        }
+
+        .floating-contact.active .contact-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffffff;
+            background: rgba(5, 15, 28, 0.92);
+            border: 1px solid rgba(72, 202, 228, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateX(4px);
+        }
+
+        .contact-item.wa:hover {
+            background: #128c7e;
+            border-color: #25d366;
+        }
+
+        .contact-item.gmail:hover {
+            background: #b23121;
+            border-color: #ea4335;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="dashboard.html" class="title-link">
+        <div class="title-container">
+            <h1>Smart Water Level Monitoring</h1>
+            <div class="subtitle">
+                <img src="logo.festlink.webp" alt="Logo Engineering" class="subtitle-logo">
+                <span>Dept. ENGINEERING</span>
+            </div>
+        </div>
+    </a>
+
+    <!-- Floating Icon Pojok Kiri Bawah -->
+    <div class="floating-contact" id="floatingContact">
+        <button type="button" class="contact-trigger" id="contactBtn" title="Hubungi Rahmat Kurniawan">
+            <img src="logo_kur_sky_blue_black_background.png" alt="Logo KUR">
+        </button>
+        
+        <div class="contact-menu">
+            <!-- Ganti nomor WA dengan format kode negara (contoh: 6281234567890) -->
+            <a href="https://wa.me/6281234567890?text=Halo%20Rahmat%20Kurniawan" target="_blank" rel="noopener noreferrer" class="contact-item wa">
+                <span>💬 WhatsApp</span>
+            </a>
+            <!-- Ganti alamat email tujuan -->
+            <a href="mailto:rahmat.kurniawan@gmail.com?subject=Smart%20Water%20Level%20Monitoring" class="contact-item gmail">
+                <span>✉️ Gmail</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Cegah pinch-zoom di iOS Safari (yang mengabaikan user-scalable=no)
+        ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (evt) {
+            document.addEventListener(evt, function (e) { e.preventDefault(); });
+        });
+
+        // Toggle menu kontak saat ikon diklik
+        const floatingContact = document.getElementById('floatingContact');
+        const contactBtn = document.getElementById('contactBtn');
+
+        contactBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            floatingContact.classList.toggle('active');
+        });
+
+        // Tutup menu jika pengguna mengklik area lain di layar
+        document.addEventListener('click', function (e) {
+            if (!floatingContact.contains(e.target)) {
+                floatingContact.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
